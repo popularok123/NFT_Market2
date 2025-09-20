@@ -4,6 +4,7 @@
   "devDependencies": {
     "@chainlink/contracts": "^1.4.0",
     "@chainlink/contracts-ccip": "^1.6.1",
+    "@chainlink/env-enc": "^1.0.5",
     "@chainlink/local": "^0.2.6",
     "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
     "@nomicfoundation/hardhat-ethers": "^3.1.0",
@@ -21,6 +22,8 @@
     "chai": "^4.5.0",
     "ethers": "^6.15.0",
     "hardhat": "^2.26.3",
+    "hardhat-deploy": "^0.12.4",
+    "hardhat-deploy-ethers": "^0.4.2",
     "hardhat-gas-reporter": "^2.3.0",
     "solidity-coverage": "^0.8.16",
     "ts-node": "^10.9.2",
