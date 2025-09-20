@@ -1,6 +1,7 @@
 import hre from "hardhat";
 import { developmentChains,networkConfig } from "../helper-hardhat-config";
 import { any } from "hardhat/internal/core/params/argumentTypes";
+import { saveDeployAddress } from "../utils/deployAddress";
 
 async function main() { 
 
@@ -12,14 +13,18 @@ async function main() {
   const MyNFT = await ethers.getContractFactory("MyNFT");
   const myNFT = await MyNFT.deploy();
   await myNFT.waitForDeployment();
-  console.log("MyNFT deployed to:", await myNFT.getAddress());
+  const nftAddress = await myNFT.getAddress();
+  console.log("MyNFT deployed to:", nftAddress);
+  saveDeployAddress(network.name,"MyNFT",nftAddress);
+
 
   //2.Deploy AuctionController implementation and proxy
   const AuctionController = await ethers.getContractFactory("AuctionController");
   const auctionController = await AuctionController.deploy();
   await auctionController.waitForDeployment();
-    const auctionAdress = await auctionController.getAddress();
+  const auctionAdress = await auctionController.getAddress();
   console.log("AuctionController deployed to:", auctionAdress);
+  saveDeployAddress(network.name,"AuctionController",auctionAdress);
 
   //3.Deploy AuctionFactory implementation and proxy
   const AuctionFactory = await ethers.getContractFactory("AuctionFactory");
@@ -27,12 +32,14 @@ async function main() {
   await auctionFactory.waitForDeployment();
     const factoryAdress = await auctionFactory.getAddress();
   console.log("AuctionFactory deployed to:",factoryAdress);
-
+  saveDeployAddress(network.name,"AuctionFactory",factoryAdress);
 
   //4.Deploy factory proxy and initialize
   const auctionFactoryProxy = await upgrades.deployProxy(AuctionFactory,[factoryAdress,auctionAdress],{initializer:"initialize"});
   await auctionFactoryProxy.waitForDeployment();
-  console.log("AuctionFactoryProxy deployed to:", await auctionFactoryProxy.getAddress());
+  const proxyAddress = await auctionFactoryProxy.getAddress();
+  saveDeployAddress(network.name,"AuctionFactoryProxy",proxyAddress);
+  console.log("AuctionFactoryProxy deployed to:", proxyAddress);
 
   let sourceChainRouter:string;
   let linkToken:string;
@@ -55,7 +62,9 @@ async function main() {
   const CrossChainMessenger = await ethers.getContractFactory("CrossChainMessager");
   const crossChainMessenger = await CrossChainMessenger.deploy(sourceChainRouter,linkToken);
   await crossChainMessenger.waitForDeployment();
-  console.log("CrossChainMessager deployed to:", await crossChainMessenger.getAddress());
+  const crosschainaddress = await crossChainMessenger.getAddress();
+  saveDeployAddress(network.name,"CrossChainMessager",crosschainaddress);
+  console.log("CrossChainMessager deployed to:", crosschainaddress);
 }
 
 main().catch((error) => {   
