@@ -97,6 +97,10 @@ contract AuctionFactory is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         return allAuctions.length;
     }
 
+    function getAuction(address nftContract, uint256 tokenId) external view returns (address) {
+        return auctionContracts[nftContract][tokenId];
+    }
+
     // UUPS authorize upgrade for factory itself
     function _authorizeUpgrade(address newImpl) internal override onlyOwner {}
 }

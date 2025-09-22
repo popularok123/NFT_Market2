@@ -35,7 +35,7 @@ async function main() {
   saveDeployAddress(network.name,"AuctionFactory",factoryAdress);
 
   //4.Deploy factory proxy and initialize
-  const auctionFactoryProxy = await upgrades.deployProxy(AuctionFactory,[factoryAdress,auctionAdress],{initializer:"initialize"});
+  const auctionFactoryProxy = await upgrades.deployProxy(AuctionFactory,[factoryAdress,auctionAdress],{ kind: "uups" });
   await auctionFactoryProxy.waitForDeployment();
   const proxyAddress = await auctionFactoryProxy.getAddress();
   saveDeployAddress(network.name,"AuctionFactoryProxy",proxyAddress);

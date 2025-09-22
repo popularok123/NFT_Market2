@@ -2,7 +2,7 @@ import path from "path"
 import fs from "fs"
 
 
-const deployAddressPath = path.join(__dirname, "../../deployAddress.json")
+const deployAddressPath = path.join(__dirname, "../deployAddress.json")
 
 export function saveDeployAddress(network: string, contractName: string, address: string) {
     let deployAddress:Record<string, Record<string, string>> = {}

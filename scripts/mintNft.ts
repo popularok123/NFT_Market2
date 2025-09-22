@@ -1,14 +1,19 @@
-import { ethers } from "hardhat";
+import { ethers, network } from "hardhat";
+import { getDeployAddress } from "../utils/deployAddress";
 
 async function main() {
 
     const [deployer] = await ethers.getSigners();
 
-    const nftAddress = "0x59b670e9fA9D0A427751Af201D676719a970857b"; // Replace with your deployed NFT contract address
+    const nftAddress = getDeployAddress(network.name, "MyNFT");
+
+    if (!nftAddress) {
+        throw new Error(`MyNFT contract address not found for network ${network.name}`);
+    }
 
     const ntf = await ethers.getContractAt("MyNFT", nftAddress);
 
-    const tx = await ntf.mintNFT();
+    const tx = await ntf.mint(deployer.address);
     await tx.wait();
 
     const tokenAmount = await  ntf.totalSupply();
